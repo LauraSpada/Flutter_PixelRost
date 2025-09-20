@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pixelroster/routes.dart';
+import 'package:flutter_pixelroster/models/user.dart';
+import 'package:flutter_pixelroster/pages/homePage.dart';
+import 'package:flutter_pixelroster/pages/userFormPage.dart';
+import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/services/auth.dart';
+import 'package:flutter_pixelroster/services/user.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class Loginpage extends StatefulWidget {
-  const Loginpage({super.key});
+  final UserService userService;
+
+  const Loginpage({Key? key, required this.userService}) : super(key: key);
 
   @override
   State<Loginpage> createState() => _LoginpageState();
@@ -13,35 +21,40 @@ class _LoginpageState extends State<Loginpage> {
   final _formkey = GlobalKey<FormState>();
   final _usrController = TextEditingController();
   final _pwdController = TextEditingController();
+  bool _loading = false;
   bool _obscure = true;
 
-  void _doLogin() {
-    final user = _usrController.text.trim();
-    final password = _pwdController.text.trim();
+  final AuthService _authService = AuthService();
 
-    final auth = Authentication.authenticate(user, password);
+  void _doLogin() async {
+    if (!_formkey.currentState!.validate()) return;
 
-    if (auth) {
-      Navigator.pushReplacementNamed(
+    setState(() => _loading = true);
+
+    final user = await _authService.login(
+      _usrController.text.trim(),
+      _pwdController.text,
+    );
+
+    if (user != null && mounted) {
+      Navigator.of(
         context,
-        AppRoutes.home,
-        arguments: {'user': user},
-      );
-    } else {
+      ).pushReplacement(MaterialPageRoute(builder: (_) => Homepage()));
+    } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          duration: Duration(seconds: 30),
-          content: Text('Usuário ou senha inválidos'),
-        ),
+        const SnackBar(content: Text('Usuário ou senha incorretos')),
       );
     }
+
+    if (mounted) setState(() => _loading = false);
   }
 
   @override
   Widget build(BuildContext context) {
- // final theme = Theme.of(context);
+    final isDarkMode = Provider.of<ThemeProvider>(context).isDarkMode;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: const Color(0xFF15047C),
+      backgroundColor: isDarkMode ? Color(0xFF45046A) : Color(0xFF671993),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -50,7 +63,9 @@ class _LoginpageState extends State<Loginpage> {
               constraints: const BoxConstraints(maxWidth: 420),
               child: Column(
                 children: [
-                  Image.asset('assets/logo-dark.png'),
+                  Image.asset(
+                    isDark ? 'assets/logo-dark.png' : 'assets/logo-light.png',
+                  ),
                   const SizedBox(height: 40),
                   Form(
                     key: _formkey,
@@ -107,7 +122,28 @@ class _LoginpageState extends State<Loginpage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFEBE1FF),
                             ),
-                            child: Text('Entrar'),
+                            child: Text(
+                              'Entrar',
+                              style: GoogleFonts.pressStart2p(fontSize: 10),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Divider(
+                          color: Color(0xFF1F133E), // cor da linha
+                          thickness: 2, // espessura da linha
+                        ),
+                        const SizedBox(height: 2),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/userformpage');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFEBE1FF),
+                          ),
+                          child: Text(
+                            'Fazer Cadastro',
+                            style: GoogleFonts.pressStart2p(fontSize: 10),
                           ),
                         ),
                       ],

@@ -10,11 +10,17 @@ class Appmenudrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Provider.of<ThemeProvider>(context).isDarkMode;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Drawer(
       child: Container(
-        color: isDarkMode ? Color(0xFF15047C) : Color(0xFFA77EF9),
+        color: isDarkMode ? Color(0xFF45046A) : Color(0xFF671993),
         child: Column(
           children: [
+            Image.asset(
+              isDark ? 'assets/logo-dark.png' : 'assets/logo-light.png',
+            ),
+            const SizedBox(height: 4),
+            Divider(),
             ListTile(
               leading: const Icon(Icons.extension),
               title: Text(

@@ -6,6 +6,7 @@ import 'package:flutter_pixelroster/pages/settingsPage.dart';
 import 'package:flutter_pixelroster/pages/userFormPage.dart';
 import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/routes.dart';
+import 'package:flutter_pixelroster/services/user.dart';
 import 'package:provider/provider.dart';
 import 'themes/app_themes.dart';
 
@@ -24,22 +25,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final userService = UserService();
 
     return MaterialApp(
-     debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeProvider.themeMode,
-      //initialRoute: '/login',
-      initialRoute: AppRoutes.userformpage,
+      initialRoute: AppRoutes.login,
       routes: {
-        '/login': (context) => const Loginpage(),
+         '/login': (context) => Loginpage(userService: userService),
         '/home': (context) => const Homepage(),
-        AppRoutes.settings: (_) => const Settingspage(),
+        '/settings': (context) => const Settingspage(),
         '/about': (context) => const Aboutpage(),
-        AppRoutes.userformpage: (_) => const Userformpage(),
-        //AppRoutes.user: (_) => Userlistpage(userService: userservice),
+        '/userformpage': (context) => Userformpage(service: UserService()),
       },
     );
   }

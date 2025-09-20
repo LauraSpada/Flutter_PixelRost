@@ -1,11 +1,27 @@
-class Authentication {
-  static final Map<String, String> _users = {
-    'teste': 'teste',
-  };
+import 'package:flutter_pixelroster/models/user.dart';
+import 'user.dart';
 
-  static bool authenticate(String user, String password) {
-    final pass = _users[user.trim()];
-    return pass != null && pass == password;
+class AuthService {
+  final UserService _userService = UserService();
+
+  Future<User?> login(String name, String password) async {
+    try {
+      List<User> users = await _userService.getUsers();
+
+      User? user;
+      try {
+        user = users.firstWhere(
+          (u) => u.name?.toLowerCase() == name.toLowerCase() &&
+                 u.password == password,
+        );
+      } catch (e) {
+        user = null;
+      }
+
+      return user;
+    } catch (e) {
+      print('Erro no login: $e');
+      return null;
+    }
   }
-
 }
