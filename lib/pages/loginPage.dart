@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pixelroster/routes.dart';
 import 'package:flutter_pixelroster/services/auth.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -40,7 +39,7 @@ class _LoginpageState extends State<Loginpage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+ // final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: const Color(0xFF15047C),
       body: SafeArea(

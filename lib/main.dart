@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pixelroster/pages/aboutpage.dart';
 import 'package:flutter_pixelroster/pages/homePage.dart';
 import 'package:flutter_pixelroster/pages/loginPage.dart';
+import 'package:flutter_pixelroster/pages/settingsPage.dart';
+import 'package:flutter_pixelroster/pages/userFormPage.dart';
+import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/routes.dart';
+import 'package:provider/provider.dart';
+import 'themes/app_themes.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,36 +23,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
+     debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: themeProvider.themeMode,
       //initialRoute: '/login',
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.userformpage,
       routes: {
-        AppRoutes.login: (_) => const Loginpage(),
-        //'/login': (context) => const Loginpage(),
-        AppRoutes.home: (_) => const Homepage(),
-        //'/home': (context) => const Homepage(),
+        '/login': (context) => const Loginpage(),
+        '/home': (context) => const Homepage(),
+        AppRoutes.settings: (_) => const Settingspage(),
+        '/about': (context) => const Aboutpage(),
+        AppRoutes.userformpage: (_) => const Userformpage(),
         //AppRoutes.user: (_) => Userlistpage(userService: userservice),
       },
     );
