@@ -38,7 +38,7 @@ class _UserformpageState extends State<Userformpage> {
 
     final user = User(
       name: _usrController.text.trim(),
-      password: _pwdController.text,
+      password: _pwdController.text.trim(),
       image: _imgController.text.trim(),
     );
 
@@ -76,10 +76,6 @@ class _UserformpageState extends State<Userformpage> {
               constraints: const BoxConstraints(maxWidth: 420),
               child: Column(
                 children: [
-                  Image.asset(
-                    isDark ? 'assets/logo-dark.png' : 'assets/logo-light.png',
-                  ),
-                  const SizedBox(height: 40),
                   CircleAvatar(
                     radius: 50,
                     backgroundImage: _imgController.text.isNotEmpty
@@ -145,11 +141,10 @@ class _UserformpageState extends State<Userformpage> {
                             prefixIcon: const Icon(Icons.image_outlined),
                             border: const OutlineInputBorder(),
                             filled: true,
-                            fillColor: const Color(0xFFEBE1FF),
                           ),
                           onChanged: (_) => setState(() {}),
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 12),
                         SizedBox(
                           width: double.infinity,
                           height: 45,

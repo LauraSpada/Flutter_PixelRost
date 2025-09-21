@@ -22,12 +22,21 @@ class Appmenudrawer extends StatelessWidget {
             const SizedBox(height: 4),
             Divider(),
             ListTile(
-              leading: const Icon(Icons.extension),
+              leading: const Icon(Icons.home),
               title: Text(
-                "Configurações",
+                "Início",
                 style: GoogleFonts.pressStart2p(fontSize: 10),
               ),
-              onTap: () => {Navigator.pushNamed(context, AppRoutes.settings)},
+              onTap: () => {Navigator.pushNamed(context, AppRoutes.home)},
+            ),
+            Divider(),
+            ListTile(
+              leading: const Icon(Icons.gamepad),
+              title: Text(
+                "Games",
+                style: GoogleFonts.pressStart2p(fontSize: 10),
+              ),
+              onTap: () => {Navigator.pushNamed(context, AppRoutes.gamelist)},
             ),
             Divider(),
             ListTile(
@@ -39,6 +48,14 @@ class Appmenudrawer extends StatelessWidget {
               onTap: () => {Navigator.pushNamed(context, AppRoutes.about)},
             ),
             Divider(),
+            ListTile(
+              leading: const Icon(Icons.extension),
+              title: Text(
+                "Configurações",
+                style: GoogleFonts.pressStart2p(fontSize: 10),
+              ),
+              onTap: () => {Navigator.pushNamed(context, AppRoutes.settings)},
+            ),
           ],
         ),
       ),

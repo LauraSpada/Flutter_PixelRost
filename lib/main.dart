@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pixelroster/pages/aboutpage.dart';
+import 'package:flutter_pixelroster/pages/gameCreatePage.dart';
+import 'package:flutter_pixelroster/pages/gameListPage.dart';
 import 'package:flutter_pixelroster/pages/homePage.dart';
 import 'package:flutter_pixelroster/pages/loginPage.dart';
 import 'package:flutter_pixelroster/pages/settingsPage.dart';
 import 'package:flutter_pixelroster/pages/userFormPage.dart';
 import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/routes.dart';
+import 'package:flutter_pixelroster/services/game.dart';
 import 'package:flutter_pixelroster/services/user.dart';
 import 'package:provider/provider.dart';
 import 'themes/app_themes.dart';
@@ -35,11 +38,13 @@ class MyApp extends StatelessWidget {
       themeMode: themeProvider.themeMode,
       initialRoute: AppRoutes.login,
       routes: {
-         '/login': (context) => Loginpage(userService: userService),
+        '/login': (context) => Loginpage(userService: userService),
         '/home': (context) => const Homepage(),
         '/settings': (context) => const Settingspage(),
         '/about': (context) => const Aboutpage(),
-        '/userformpage': (context) => Userformpage(service: UserService()),
+        '/userform': (context) => Userformpage(service: UserService()),
+        '/gamelist': (context) => Gamelistpage(gameService: GameService()),
+        '/gamecreate': (context) => Gamecreatepage(service: GameService()),
       },
     );
   }

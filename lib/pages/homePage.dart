@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/widgets/appMenuDrawer.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.isDarkMode;
+
     return Scaffold(
-      backgroundColor: Color(0xFFEBE1FF),
       appBar: AppBar(),
       drawer: const Appmenudrawer(),
       body: Center(
@@ -16,7 +20,6 @@ class Homepage extends StatelessWidget {
           'Página Home!',
           style: GoogleFonts.pressStart2p(
             fontSize: 20,
-            color: Color(0xFFA9A9A9),
           ),
           // textAlign: TextAlign.center,
         ),

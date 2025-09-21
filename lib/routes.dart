@@ -4,5 +4,7 @@ class AppRoutes {
   static const String user = '/user';
   static const String about = '/about';
   static const String settings = '/settings';
-  static const String userformpage = '/userformpage';
+  static const String userform = '/userform';
+  static const String gamelist = '/gamelist';
+  static const String gamecreate = '/gamecreate';
 }

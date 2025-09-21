@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pixelroster/models/user.dart';
 import 'package:flutter_pixelroster/pages/homePage.dart';
-import 'package:flutter_pixelroster/pages/userFormPage.dart';
 import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/services/auth.dart';
 import 'package:flutter_pixelroster/services/user.dart';
@@ -136,7 +134,7 @@ class _LoginpageState extends State<Loginpage> {
                         const SizedBox(height: 2),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/userformpage');
+                            Navigator.pushNamed(context, '/userform');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFEBE1FF),
