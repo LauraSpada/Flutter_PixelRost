@@ -1,29 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pixelroster/models/game.dart';
-import 'package:flutter_pixelroster/pages/gameListPage.dart';
 import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/services/game.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class Gamecreatepage extends StatefulWidget {
+class GameUpdatePage extends StatefulWidget {
   final GameService service;
+  final Game game;
 
-  const Gamecreatepage({super.key, required this.service});
+  const GameUpdatePage({super.key, required this.service, required this.game});
 
   @override
-  State<Gamecreatepage> createState() => _GamecreatepageState();
+  State<GameUpdatePage> createState() => _GameUpdatePageState();
 }
 
-class _GamecreatepageState extends State<Gamecreatepage> {
+class _GameUpdatePageState extends State<GameUpdatePage> {
   final _formKey = GlobalKey<FormState>();
-  final _gmController = TextEditingController();
-  final _desController = TextEditingController();
-  final _resController = TextEditingController();
-  final _tpController = TextEditingController();
-  final _imgController = TextEditingController();
-  final _cmpController = TextEditingController();
+  late TextEditingController _gmController;
+  late TextEditingController _desController;
+  late TextEditingController _resController;
+  late TextEditingController _tpController;
+  late TextEditingController _imgController;
+  late TextEditingController _cmpController;
   bool _saving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _gmController = TextEditingController(text: widget.game.name);
+    _desController = TextEditingController(text: widget.game.description);
+    _resController = TextEditingController(
+      text: widget.game.releasedate.toString(),
+    );
+    _tpController = TextEditingController(text: widget.game.type);
+    _imgController = TextEditingController(text: widget.game.image ?? "");
+    _cmpController = TextEditingController(text: widget.game.company);
+  }
 
   @override
   void dispose() {
@@ -36,12 +49,12 @@ class _GamecreatepageState extends State<Gamecreatepage> {
     super.dispose();
   }
 
-  Future<void> _save() async {
+  Future<void> _update() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _saving = true);
 
-    final game = Game(
+    final updatedGame = widget.game.copyWith(
       name: _gmController.text.trim(),
       description: _desController.text.trim(),
       releasedate: int.parse(_resController.text.trim()),
@@ -51,14 +64,12 @@ class _GamecreatepageState extends State<Gamecreatepage> {
     );
 
     try {
-      setState(() => _saving = true);
-      await widget.service.createGame(game);
+      final savedGame = await widget.service.updateGame(updatedGame);
 
       if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => Gamelistpage(gameService: GameService()),
-          ),
+        Navigator.of(context).pop(savedGame);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Game atualizado com sucesso!')),
         );
       }
     } catch (e) {
@@ -76,6 +87,7 @@ class _GamecreatepageState extends State<Gamecreatepage> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.isDarkMode;
+
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.black : Color(0xFFE8DAFF),
       body: SafeArea(
@@ -85,18 +97,96 @@ class _GamecreatepageState extends State<Gamecreatepage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: isDarkMode ? Color(0xFFE8DAFF) : Color(0xFF45046A),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: isDarkMode
+                            ? Color(0xFFE8DAFF)
+                            : Color(0xFF45046A),
+                      ),
+                      iconSize: 20, 
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    iconSize: 20,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+                    ElevatedButton(
+                      onPressed: _saving
+                          ? null
+                          : () async {
+                              final confirm = await showDialog<bool>(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                  title: const Text('Confirmação'),
+                                  content: const Text(
+                                    'Deseja realmente excluir este jogo?',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, false),
+                                      child: const Text('Cancelar'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, true),
+                                      child: const Text('Excluir'),
+                                    ),
+                                  ],
+                                ),
+                              );
+
+                              if (confirm == true) {
+                                setState(() => _saving = true);
+                                try {
+                                  await widget.service.deleteGame(
+                                    widget.game.id!,
+                                  ); // chama seu serviço
+                                  if (mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Jogo excluído com sucesso!',
+                                        ),
+                                      ),
+                                    );
+                                    Navigator.pop(
+                                      context,
+                                      true,
+                                    ); // volta para a lista
+                                  }
+                                } catch (e) {
+                                  if (mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Erro ao excluir: $e'),
+                                      ),
+                                    );
+                                  }
+                                } finally {
+                                  if (mounted) setState(() => _saving = false);
+                                }
+                              }
+                            },
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(20),
+                        backgroundColor: isDarkMode
+                            ? Colors.white
+                            : Colors.black,
+                        //    ? Colors.white
+                        //   : Colors.black,
+                      ),
+                      child: Icon(
+                        Icons.delete_forever,
+                        color: isDarkMode
+                            ? Color(0xFFB5076B)
+                            : Color(0xFFFF7EC8),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 15),
                 Container(
@@ -137,10 +227,10 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                         TextFormField(
                           style: const TextStyle(color: Colors.black),
                           controller: _gmController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Nome',
-                            prefixIcon: const Icon(Icons.gamepad),
-                            border: const OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.gamepad),
+                            border: OutlineInputBorder(),
                             filled: true,
                           ),
                           validator: (v) => (v == null || v.trim().isEmpty)
@@ -151,10 +241,10 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                         TextFormField(
                           style: const TextStyle(color: Colors.black),
                           controller: _desController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Descrição',
-                            prefixIcon: const Icon(Icons.wysiwyg_outlined),
-                            border: const OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.wysiwyg_outlined),
+                            border: OutlineInputBorder(),
                             filled: true,
                           ),
                         ),
@@ -163,10 +253,10 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                           style: const TextStyle(color: Colors.black),
                           controller: _resController,
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Ano de Lançamento',
-                            prefixIcon: const Icon(Icons.date_range_outlined),
-                            border: const OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.date_range_outlined),
+                            border: OutlineInputBorder(),
                             filled: true,
                           ),
                           validator: (v) {
@@ -183,10 +273,10 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                         TextFormField(
                           style: const TextStyle(color: Colors.black),
                           controller: _tpController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Tipo',
-                            prefixIcon: const Icon(Icons.widgets_outlined),
-                            border: const OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.widgets_outlined),
+                            border: OutlineInputBorder(),
                             filled: true,
                           ),
                           validator: (v) => (v == null || v.trim().isEmpty)
@@ -197,12 +287,12 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                         TextFormField(
                           style: const TextStyle(color: Colors.black),
                           controller: _imgController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'URL da Imagem',
-                            prefixIcon: const Icon(
+                            prefixIcon: Icon(
                               Icons.add_photo_alternate_outlined,
                             ),
-                            border: const OutlineInputBorder(),
+                            border: OutlineInputBorder(),
                             filled: true,
                           ),
                           onChanged: (_) => setState(() {}),
@@ -211,14 +301,14 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                         TextFormField(
                           style: const TextStyle(color: Colors.black),
                           controller: _cmpController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Empresa',
-                            prefixIcon: const Icon(Icons.business_outlined),
-                            border: const OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.business_outlined),
+                            border: OutlineInputBorder(),
                             filled: true,
                           ),
                           validator: (v) => (v == null || v.trim().isEmpty)
-                              ? 'Informe o tipo'
+                              ? 'Informe a empresa'
                               : null,
                         ),
                       ],
@@ -230,7 +320,7 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                   width: 180,
                   height: 45,
                   child: ElevatedButton(
-                    onPressed: _saving ? null : _save,
+                    onPressed: _saving ? null : _update,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isDarkMode
                           ? Color(0xFFE8DAFF)
@@ -246,7 +336,7 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Text(
-                            'Salvar',
+                            'Atualizar',
                             style: GoogleFonts.pressStart2p(
                               fontSize: 10,
                               color: isDarkMode

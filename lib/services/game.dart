@@ -55,7 +55,7 @@ class GameService {
     throw Exception('Falha ao atualizar Jogo (${res.statusCode})');
   }
 
-  Future<void> deletegame(String id) async {
+  Future<void> deleteGame(String id) async {
     final res = await http.delete(_uri('/games/$id'));
     if (res.statusCode != 200 && res.statusCode != 204) {
       throw Exception('Falha ao remover Jogo (${res.statusCode})');

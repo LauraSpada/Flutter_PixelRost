@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pixelroster/models/user.dart';
 import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/routes.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,7 @@ class Appmenudrawer extends StatelessWidget {
         color: isDarkMode ? Color(0xFF45046A) : Color(0xFF671993),
         child: Column(
           children: [
+            const SizedBox(height: 2),
             Image.asset(
               isDark ? 'assets/logo-dark.png' : 'assets/logo-light.png',
             ),
@@ -54,7 +56,7 @@ class Appmenudrawer extends StatelessWidget {
                 "Configurações",
                 style: GoogleFonts.pressStart2p(fontSize: 10),
               ),
-              onTap: () => {Navigator.pushNamed(context, AppRoutes.settings)},
+              onTap: () => Navigator.pushNamed(context, AppRoutes.settings),
             ),
           ],
         ),

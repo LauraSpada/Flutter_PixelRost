@@ -13,7 +13,6 @@ class UserService {
     '$baseurl$path',
   ).replace(queryParameters: query?.map((k, v) => MapEntry(k, v?.toString())));
 
-  
   // Listar todos os usuários
   Future<List<User>> getUsers() async {
     final res = await http.get(_uri('/users'));
@@ -25,8 +24,35 @@ class UserService {
     throw Exception('Falha ao carregar usuários (${res.statusCode})');
   }
 
+  Future<User> getUser(String id) async {
+  try {
+    final uri = _uri('/users/$id');
+    print('🔍 Buscando usuário em: $uri');
 
-  // Obter usuário por ID
+    final res = await http.get(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    print('📦 Status code: ${res.statusCode}');
+    print('📄 Resposta: ${res.body}');
+
+    if (res.statusCode == 200) {
+      final jsonData = json.decode(res.body);
+      return User.fromJson(jsonData); // direto, pois não há chave "user"
+    } else if (res.statusCode == 404) {
+      throw Exception('Usuário não encontrado (404).');
+    } else {
+      throw Exception('Falha ao carregar usuário (${res.statusCode})');
+    }
+  } catch (e) {
+    print('❌ Erro ao buscar usuário: $e');
+    throw Exception('Erro ao buscar usuário: $e');
+  }
+}
+
+
+  /*
   Future<User> getUser(String id) async {
     final res = await http.get(_uri('/users/$id'));
     if (res.statusCode == 200) {
@@ -34,7 +60,7 @@ class UserService {
     }
     throw Exception('Falha ao carregar usuário (${res.statusCode})');
   }
-
+*/
   // Criar usuário
   Future<User> createUser(User user) async {
     final res = await http.post(
@@ -71,5 +97,4 @@ class UserService {
     }
   }
   */
-  
 }

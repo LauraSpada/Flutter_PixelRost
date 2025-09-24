@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pixelroster/models/user.dart';
 import 'package:flutter_pixelroster/pages/homePage.dart';
 import 'package:flutter_pixelroster/providers/theme_provider.dart';
+import 'package:flutter_pixelroster/providers/user_provider.dart';
 import 'package:flutter_pixelroster/services/user.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -37,9 +38,12 @@ class _UserformpageState extends State<Userformpage> {
     setState(() => _saving = true);
 
     final user = User(
+      id: '',
       name: _usrController.text.trim(),
       password: _pwdController.text.trim(),
-      image: _imgController.text.trim(),
+      image: _imgController.text.trim().isEmpty
+          ? null
+          : _imgController.text.trim(),
     );
 
     try {
@@ -47,9 +51,8 @@ class _UserformpageState extends State<Userformpage> {
       await widget.service.createUser(user);
 
       if (mounted) {
-        Navigator.of(
-          context,
-        ).pushReplacement(MaterialPageRoute(builder: (_) => Homepage()));
+        Provider.of<UserProvider>(context, listen: false).setUser(user);
+        Navigator.pushReplacementNamed(context, '/home');
       }
     } catch (e) {
       if (mounted) {
@@ -64,8 +67,8 @@ class _UserformpageState extends State<Userformpage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Provider.of<ThemeProvider>(context).isDarkMode;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.isDarkMode;
     return Scaffold(
       backgroundColor: isDarkMode ? Color(0xFF45046A) : Color(0xFF671993),
       body: SafeArea(
@@ -76,6 +79,19 @@ class _UserformpageState extends State<Userformpage> {
               constraints: const BoxConstraints(maxWidth: 420),
               child: Column(
                 children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Color(0xFFE8DAFF),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 15),
                   CircleAvatar(
                     radius: 50,
                     backgroundImage: _imgController.text.isNotEmpty

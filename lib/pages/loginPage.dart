@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pixelroster/pages/homePage.dart';
 import 'package:flutter_pixelroster/providers/theme_provider.dart';
+import 'package:flutter_pixelroster/providers/user_provider.dart';
 import 'package:flutter_pixelroster/services/auth.dart';
 import 'package:flutter_pixelroster/services/user.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,9 +35,8 @@ class _LoginpageState extends State<Loginpage> {
     );
 
     if (user != null && mounted) {
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => Homepage()));
+      Provider.of<UserProvider>(context, listen: false).setUser(user);
+      Navigator.pushReplacementNamed(context, '/home');
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Usuário ou senha incorretos')),

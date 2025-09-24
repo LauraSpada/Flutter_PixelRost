@@ -11,28 +11,40 @@ class Aboutpage extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.isDarkMode;
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Sobre", style: GoogleFonts.pressStart2p(fontSize: 15)),
       ),
       drawer: const Appmenudrawer(),
-      body: Column(
-        children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: AssetImage('assets/fotocaricatura.png'), //
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.80,
+          height: MediaQuery.of(context).size.height * 0.70,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isDarkMode ? Color(0xFFB5076B) : Color(0xFFFF7EC8),
+            borderRadius: BorderRadius.circular(5),
           ),
-          const SizedBox(height: 20),
-          Divider(),
-          const SizedBox(height: 20),
-          Text("Laura Portela Spada"),
-          const SizedBox(height: 20),
-          Text("200921"),
-          const SizedBox(height: 20),
-          Text("Análise e Desenvolvimento de Sistemas"),
-          //Text(""),
-        ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+             // const SizedBox(height: 20),
+              CircleAvatar(
+                radius: 60,
+                backgroundImage: AssetImage('assets/fotocaricatura.png'), //
+              ),
+              const SizedBox(height: 18),
+              Divider(),
+              const SizedBox(height: 18),
+              Text("Laura Portela Spada"),
+              const SizedBox(height: 18),
+              Text("200921"),
+              const SizedBox(height: 18),
+              Text("Análise e Desenvolvimento de Sistemas"),
+            //  const SizedBox(height: 20),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -1,23 +1,28 @@
 class User {
-  final String? id;
-  String name;
-  String password;
-  String? image;
+  final String id;
+  final String name;
+  final String password;
+  final String? image;
 
-  User({this.id, required this.name, required this.password, this.image});
+  User({
+    required this.id,
+    required this.name,
+    required this.password,
+    this.image,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id']?.toString(),
+      id: json['id'] ?? '',
       name: json['name'] ?? '',
       password: json['password'] ?? '',
-      image: json['image'] ?? '',
+      image: json['image'], 
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      if (id != null) 'id': id,
+      'id': id,
       'name': name,
       'password': password,
       'image': image,

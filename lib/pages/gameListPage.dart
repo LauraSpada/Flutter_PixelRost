@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pixelroster/models/game.dart';
-import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/routes.dart';
 import 'package:flutter_pixelroster/services/game.dart';
 import 'package:flutter_pixelroster/widgets/appMenuDrawer.dart';
 import 'package:flutter_pixelroster/widgets/gameCard.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class Gamelistpage extends StatefulWidget {
   final GameService gameService;
@@ -26,10 +24,14 @@ class _GamelistpageState extends State<Gamelistpage> {
     futureGames = widget.gameService.getGames();
   }
 
+  void reloadGames() {
+    setState(() {
+      futureGames = widget.gameService.getGames();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    bool isDarkMode = themeProvider.isDarkMode;
     return Scaffold(
       appBar: AppBar(
         title: Text("Games", style: GoogleFonts.pressStart2p(fontSize: 15)),
@@ -53,7 +55,7 @@ class _GamelistpageState extends State<Gamelistpage> {
             return Center(
               child: Text(
                 'Nenhum Jogo encontrado',
-                style: GoogleFonts.pressStart2p(fontSize: 16),
+                style: GoogleFonts.pressStart2p(fontSize: 10),
               ),
             );
           }
@@ -63,11 +65,15 @@ class _GamelistpageState extends State<Gamelistpage> {
             padding: const EdgeInsets.all(8),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.7,
+              childAspectRatio: 0.80,
             ),
             itemCount: games.length,
             itemBuilder: (context, index) {
-              return Gamecard(game: games[index]);
+              return Gamecard(
+                game: games[index],
+                service: widget.gameService,
+                onUpdated: reloadGames,
+              );
             },
           );
         },
