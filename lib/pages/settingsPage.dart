@@ -16,14 +16,12 @@ class _SettingspageState extends State<Settingspage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
-    
+
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.isDarkMode;
 
-     if (user == null) {
-      return const Scaffold(
-        body: Center(child: Text("Nenhum usuário logado")),
-      );
+    if (user == null) {
+      return const Scaffold(body: Center(child: Text("Nenhum usuário logado")));
     }
 
     return Scaffold(
@@ -58,24 +56,46 @@ class _SettingspageState extends State<Settingspage> {
           decoration: BoxDecoration(
             color: isDarkMode ? Color(0xFFB5076B) : Color(0xFFFF7EC8),
             borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: isDarkMode ? Colors.white : Colors.black,
+              width: 1,
+            ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Column(
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage:
-                        (user.image != null && user.image!.isNotEmpty)
-                        ? NetworkImage(user.image!)
-                        : null,
-                    child: (user.image == null || user.image!.isEmpty)
-                        ? const Icon(Icons.person, size: 50)
-                        : null,
+                  Text(
+                    "Informações da sua conta:",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 15),
+                  Container(
+                    padding: const EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                      shape: BoxShape.circle,
+                    ),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage:
+                          (user.image != null && user.image!.isNotEmpty)
+                          ? NetworkImage(user.image!)
+                          : null,
+                      child: (user.image == null || user.image!.isEmpty)
+                          ? const Icon(Icons.person, size: 50)
+                          : null,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Divider(),
+                  const SizedBox(height: 8),
                   Text(user.name, style: const TextStyle(fontSize: 20)),
+                  const SizedBox(height: 12),
                   Text('ID: ${user.id}', style: const TextStyle(fontSize: 16)),
                 ],
               ),

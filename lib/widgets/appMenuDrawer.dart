@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pixelroster/models/user.dart';
 import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/routes.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -58,6 +57,7 @@ class Appmenudrawer extends StatelessWidget {
               ),
               onTap: () => Navigator.pushNamed(context, AppRoutes.settings),
             ),
+            Divider(),
           ],
         ),
       ),

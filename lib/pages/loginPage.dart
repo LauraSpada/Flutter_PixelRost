@@ -111,26 +111,19 @@ class _LoginpageState extends State<Loginpage> {
                           },
                         ),
                         const SizedBox(height: 12),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 40,
-                          child: ElevatedButton(
-                            onPressed: _doLogin,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFEBE1FF),
-                            ),
-                            child: Text(
-                              'Entrar',
-                              style: GoogleFonts.pressStart2p(fontSize: 10),
-                            ),
+                        ElevatedButton(
+                          onPressed: _doLogin,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFEBE1FF),
+                          ),
+                          child: Text(
+                            'Entrar',
+                            style: GoogleFonts.pressStart2p(fontSize: 10),
                           ),
                         ),
-                        const SizedBox(height: 12),
-                        Divider(
-                          color: Color(0xFF1F133E), // cor da linha
-                          thickness: 2, // espessura da linha
-                        ),
-                        const SizedBox(height: 2),
+                        const SizedBox(height: 8),
+                        Divider(),
+                        const SizedBox(height: 5),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/userform');

@@ -103,11 +103,9 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                     IconButton(
                       icon: Icon(
                         Icons.arrow_back,
-                        color: isDarkMode
-                            ? Color(0xFFE8DAFF)
-                            : Color(0xFF45046A),
+                        color: isDarkMode ? Colors.white : Colors.black,
                       ),
-                      iconSize: 20, 
+                      iconSize: 20,
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -188,12 +186,14 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 15),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.20,
-                  width: MediaQuery.of(context).size.height * 0.20,
+                  height: MediaQuery.of(context).size.height * 0.24,
+                  width: MediaQuery.of(context).size.height * 0.24,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 2),
+                    border: Border.all(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                      width: 2,
+                    ),
                     color: const Color(0xFFEBE1FF),
                     borderRadius: BorderRadius.circular(5),
                     image: _imgController.text.isNotEmpty
@@ -218,6 +218,10 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                   decoration: BoxDecoration(
                     color: isDarkMode ? Color(0xFF45046A) : Color(0xFF671993),
                     borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                      width: 1,
+                    ),
                   ),
                   child: Form(
                     key: _formKey,

@@ -65,7 +65,7 @@ class _GamelistpageState extends State<Gamelistpage> {
             padding: const EdgeInsets.all(8),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.80,
+              childAspectRatio: 0.65,
             ),
             itemCount: games.length,
             itemBuilder: (context, index) {

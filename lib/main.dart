@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pixelroster/models/user.dart';
-import 'package:flutter_pixelroster/pages/aboutpage.dart';
+import 'package:flutter_pixelroster/pages/aboutPage.dart';
 import 'package:flutter_pixelroster/pages/gameCreatePage.dart';
 import 'package:flutter_pixelroster/pages/gameListPage.dart';
 import 'package:flutter_pixelroster/pages/homePage.dart';
@@ -20,7 +19,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvider()), 
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: const MyApp(),
     ),

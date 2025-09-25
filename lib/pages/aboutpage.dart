@@ -24,24 +24,35 @@ class Aboutpage extends StatelessWidget {
           decoration: BoxDecoration(
             color: isDarkMode ? Color(0xFFB5076B) : Color(0xFFFF7EC8),
             borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: isDarkMode ? Colors.white : Colors.black,
+              width: 1,
+            ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-             // const SizedBox(height: 20),
+              Text(
+                "Sobre a Desenvolvedora:",
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 15),
               CircleAvatar(
                 radius: 60,
-                backgroundImage: AssetImage('assets/fotocaricatura.png'), //
+                backgroundImage: AssetImage('assets/fotocaricatura.png'),
+                 //
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 12),
               Divider(),
-              const SizedBox(height: 18),
+              const SizedBox(height: 12),
               Text("Laura Portela Spada"),
-              const SizedBox(height: 18),
+              const SizedBox(height: 15),
               Text("200921"),
-              const SizedBox(height: 18),
+              const SizedBox(height: 15),
               Text("Análise e Desenvolvimento de Sistemas"),
-            //  const SizedBox(height: 20),
             ],
           ),
         ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pixelroster/models/user.dart';
-import 'package:flutter_pixelroster/pages/homePage.dart';
 import 'package:flutter_pixelroster/providers/theme_provider.dart';
 import 'package:flutter_pixelroster/providers/user_provider.dart';
 import 'package:flutter_pixelroster/services/user.dart';
@@ -82,10 +81,7 @@ class _UserformpageState extends State<Userformpage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Color(0xFFE8DAFF),
-                      ),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -161,29 +157,23 @@ class _UserformpageState extends State<Userformpage> {
                           onChanged: (_) => setState(() {}),
                         ),
                         const SizedBox(height: 12),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 45,
-                          child: ElevatedButton(
-                            onPressed: _saving ? null : _save,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFEBE1FF),
-                            ),
-                            child: _saving
-                                ? const SizedBox(
-                                    width: 18,
-                                    height: 18,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : Text(
-                                    'Criar Usuário',
-                                    style: GoogleFonts.pressStart2p(
-                                      fontSize: 10,
-                                    ),
-                                  ),
+                        ElevatedButton(
+                          onPressed: _saving ? null : _save,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFEBE1FF),
                           ),
+                          child: _saving
+                              ? const SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  'Criar Usuário',
+                                  style: GoogleFonts.pressStart2p(fontSize: 10),
+                                ),
                         ),
                       ],
                     ),

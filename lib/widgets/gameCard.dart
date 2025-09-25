@@ -30,34 +30,26 @@ class Gamecard extends StatelessWidget {
         }
       },
       child: Card(
-        margin: const EdgeInsets.all(12),
         elevation: 6,
         color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: BorderSide(
-            color: Colors.white, // cor da borda
-            width: 2, // espessura da borda
-          ),
+          side: BorderSide(color: Colors.white, width: 3),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: game.image != null && game.image!.isNotEmpty
-                  ? Image.network(
-                      game.image!,
-                      height: 180,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    )
-                  : Container(
-                      height: 180,
-                      width: double.infinity,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.gamepad, size: 60),
-                    ),
+              child: AspectRatio(
+                aspectRatio: 1, // sempre quadrada
+                child: game.image != null && game.image!.isNotEmpty
+                    ? Image.network(game.image!, fit: BoxFit.cover)
+                    : Container(
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.gamepad, size: 60),
+                      ),
+              ),
             ),
             const SizedBox(height: 8),
             Text(
@@ -73,6 +65,7 @@ class Gamecard extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: Colors.black),
             ),
             const SizedBox(height: 8),
+            const Spacer(),
             const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.black),
           ],
         ),
