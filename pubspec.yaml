@@ -42,7 +42,6 @@ dependencies:
   shared_preferences: ^2.5.3
   google_fonts: ^6.3.1
   flutter_native_splash: ^2.4.6
-  google_maps_flutter: ^2.13.1
 
 dev_dependencies:
   flutter_test:
@@ -65,9 +64,9 @@ flutter_launcher_icons:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_native_splash:
-  color: "#671993"
+  color: "#AE86C1"
   image: "assets/logo-light.png"
-  color_dark: "#45046a"
+  color_dark: "#350D4C"
   image_dark: "assets/logo-dark.png"
   android: true
   ios: true

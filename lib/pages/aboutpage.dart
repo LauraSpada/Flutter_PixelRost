@@ -43,7 +43,6 @@ class Aboutpage extends StatelessWidget {
               CircleAvatar(
                 radius: 60,
                 backgroundImage: AssetImage('assets/fotocaricatura.png'),
-                 //
               ),
               const SizedBox(height: 12),
               Divider(),

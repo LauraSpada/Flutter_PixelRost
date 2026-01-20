@@ -51,7 +51,7 @@ class _LoginpageState extends State<Loginpage> {
     final isDarkMode = Provider.of<ThemeProvider>(context).isDarkMode;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDarkMode ? Color(0xFF45046A) : Color(0xFF671993),
+      backgroundColor: isDarkMode ? Color(0xFF350D4C) : Color(0xFFAE86C1),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -118,7 +118,10 @@ class _LoginpageState extends State<Loginpage> {
                           ),
                           child: Text(
                             'Entrar',
-                            style: GoogleFonts.pressStart2p(fontSize: 10),
+                            style: GoogleFonts.pressStart2p(fontSize: 10,
+                            color: isDarkMode
+                                ? Color(0xFFB5076B)
+                                : Color(0xFFD66AC2),),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -133,7 +136,10 @@ class _LoginpageState extends State<Loginpage> {
                           ),
                           child: Text(
                             'Fazer Cadastro',
-                            style: GoogleFonts.pressStart2p(fontSize: 10),
+                            style: GoogleFonts.pressStart2p(fontSize: 10,
+                            color: isDarkMode
+                                ? Color(0xFFB5076B)
+                                : Color(0xFFD66AC2),),
                           ),
                         ),
                       ],

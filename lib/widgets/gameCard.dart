@@ -47,7 +47,7 @@ class Gamecard extends StatelessWidget {
                     ? Image.network(game.image!, fit: BoxFit.cover)
                     : Container(
                         color: Colors.grey[300],
-                        child: const Icon(Icons.gamepad, size: 60),
+                        child: const Icon(Icons.videogame_asset, size: 60),
                       ),
               ),
             ),
@@ -55,14 +55,14 @@ class Gamecard extends StatelessWidget {
             Text(
               game.name,
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
             Text(
               game.company,
-              style: TextStyle(fontSize: 14, color: Colors.black),
+              style: TextStyle(fontSize: 12, color: Colors.black),
             ),
             const SizedBox(height: 8),
             const Spacer(),

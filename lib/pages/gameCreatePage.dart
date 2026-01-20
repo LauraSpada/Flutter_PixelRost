@@ -77,7 +77,16 @@ class _GamecreatepageState extends State<Gamecreatepage> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.isDarkMode;
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.black : Color(0xFFE8DAFF),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: isDarkMode ? Colors.white : Colors.black,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text("Criar", style: GoogleFonts.pressStart2p(fontSize: 15)),
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -85,22 +94,9 @@ class _GamecreatepageState extends State<Gamecreatepage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: isDarkMode ? Colors.white : Colors.black,
-                    ),
-                    iconSize: 20,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.22,
-                  width: MediaQuery.of(context).size.height * 0.22,
+                  height: MediaQuery.of(context).size.height * 0.20,
+                  width: MediaQuery.of(context).size.height * 0.20,
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: isDarkMode ? Colors.white : Colors.black,
@@ -116,10 +112,10 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                         : null,
                   ),
                   child: _imgController.text.isEmpty
-                      ? const Icon(
-                          Icons.gamepad,
-                          size: 50,
-                          color: Colors.deepPurple,
+                      ? Icon(
+                          Icons.videogame_asset,
+                          size: 40,
+                          color: isDarkMode ? Color(0xFFB5076B) : Color(0xFFFF7EC8),
                         )
                       : null,
                 ),
@@ -128,7 +124,7 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                   width: MediaQuery.of(context).size.width * 0.80,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Color(0xFF45046A) : Color(0xFF671993),
+                    color: isDarkMode ? Color(0xFF350D4C) : Color(0xFFAE86C1),
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
                       color: isDarkMode ? Colors.white : Colors.black,
@@ -239,11 +235,9 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                     onPressed: _saving ? null : _save,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isDarkMode
-                          ? Color(0xFFE8DAFF)
-                          : Color(0xFF45046A),
+                          ? Color(0xFF350D4C) : Color(0xFFAE86C1),
                       foregroundColor: isDarkMode
-                          ? Color(0xFF45046A)
-                          : Color(0xFFE8DAFF),
+                          ? Color(0xFFAE86C1) : Color(0xFF350D4C),
                     ),
                     child: _saving
                         ? const SizedBox(
@@ -255,9 +249,7 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                             'Salvar',
                             style: GoogleFonts.pressStart2p(
                               fontSize: 10,
-                              color: isDarkMode
-                                  ? Color(0xFF45046A)
-                                  : Color(0xFFE8DAFF),
+                              color: isDarkMode ? Color(0xFFAE86C1) : Color(0xFF350D4C) ,
                             ),
                           ),
                   ),

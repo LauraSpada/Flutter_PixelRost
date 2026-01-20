@@ -89,7 +89,95 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
     bool isDarkMode = themeProvider.isDarkMode;
 
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.black : Color(0xFFE8DAFF),
+     appBar: AppBar(
+        leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+         color: isDarkMode ? Colors.white : Colors.black,
+       ),
+      onPressed: () => Navigator.pop(context),
+    ),
+    title: Text(
+      "Atualizar",
+      style: GoogleFonts.pressStart2p(fontSize: 15),
+   ),
+  actions: [
+    Padding(
+      padding: const EdgeInsets.only(right: 12),
+      child: InkResponse(
+        radius: 22,
+        onTap: _saving
+            ? null
+            : () async {
+                final confirm = await showDialog<bool>(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: const Text('Confirmação'),
+                    content: const Text(
+                      'Deseja realmente excluir este jogo?',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () =>
+                            Navigator.pop(context, false),
+                        child: const Text('Cancelar'),
+                      ),
+                      TextButton(
+                        onPressed: () =>
+                            Navigator.pop(context, true),
+                        child: const Text('Excluir'),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (confirm == true) {
+                  setState(() => _saving = true);
+
+                  try {
+                    await widget.service.deleteGame(
+                      widget.game.id!,
+                    );
+
+                    if (!mounted) return;
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('Jogo excluído com sucesso!'),
+                      ),
+                    );
+
+                    Navigator.pop(context, true);
+                  } catch (e) {
+                    if (!mounted) return;
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Erro ao excluir: $e'),
+                      ),
+                    );
+                  } finally {
+                    if (mounted) {
+                      setState(() => _saving = false);
+                    }
+                  }
+                }
+              },
+        child: CircleAvatar(
+          radius: 22,
+          backgroundColor:
+              isDarkMode ? Colors.black : Color(0xFFE8DAFF),
+          child: Icon(
+            Icons.delete_forever,
+            size: 22,
+            color: isDarkMode ? Color(0xFFB5076B) : Color(0xFFFF7EC8),
+          ),
+        ),
+      ),
+    ),
+  ],
+),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -97,98 +185,9 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: isDarkMode ? Colors.white : Colors.black,
-                      ),
-                      iconSize: 20,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ElevatedButton(
-                      onPressed: _saving
-                          ? null
-                          : () async {
-                              final confirm = await showDialog<bool>(
-                                context: context,
-                                builder: (_) => AlertDialog(
-                                  title: const Text('Confirmação'),
-                                  content: const Text(
-                                    'Deseja realmente excluir este jogo?',
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, false),
-                                      child: const Text('Cancelar'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, true),
-                                      child: const Text('Excluir'),
-                                    ),
-                                  ],
-                                ),
-                              );
-
-                              if (confirm == true) {
-                                setState(() => _saving = true);
-                                try {
-                                  await widget.service.deleteGame(
-                                    widget.game.id!,
-                                  ); // chama seu serviço
-                                  if (mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          'Jogo excluído com sucesso!',
-                                        ),
-                                      ),
-                                    );
-                                    Navigator.pop(
-                                      context,
-                                      true,
-                                    ); // volta para a lista
-                                  }
-                                } catch (e) {
-                                  if (mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text('Erro ao excluir: $e'),
-                                      ),
-                                    );
-                                  }
-                                } finally {
-                                  if (mounted) setState(() => _saving = false);
-                                }
-                              }
-                            },
-                      style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(20),
-                        backgroundColor: isDarkMode
-                            ? Colors.white
-                            : Colors.black,
-                        //    ? Colors.white
-                        //   : Colors.black,
-                      ),
-                      child: Icon(
-                        Icons.delete_forever,
-                        color: isDarkMode
-                            ? Color(0xFFB5076B)
-                            : Color(0xFFFF7EC8),
-                      ),
-                    ),
-                  ],
-                ),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.24,
-                  width: MediaQuery.of(context).size.height * 0.24,
+                  height: MediaQuery.of(context).size.height * 0.20,
+                  width: MediaQuery.of(context).size.height * 0.20,
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: isDarkMode ? Colors.white : Colors.black,
@@ -204,10 +203,10 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                         : null,
                   ),
                   child: _imgController.text.isEmpty
-                      ? const Icon(
-                          Icons.gamepad,
-                          size: 50,
-                          color: Colors.deepPurple,
+                      ? Icon(
+                          Icons.videogame_asset,
+                          size: 40,
+                          color: isDarkMode ? Color(0xFFB5076B) : Color(0xFFFF7EC8),
                         )
                       : null,
                 ),
@@ -216,7 +215,7 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                   width: MediaQuery.of(context).size.width * 0.80,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Color(0xFF45046A) : Color(0xFF671993),
+                    color: isDarkMode ? Color(0xFF350D4C) : Color(0xFFAE86C1),
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
                       color: isDarkMode ? Colors.white : Colors.black,
@@ -326,12 +325,8 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                   child: ElevatedButton(
                     onPressed: _saving ? null : _update,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isDarkMode
-                          ? Color(0xFFE8DAFF)
-                          : Color(0xFF45046A),
-                      foregroundColor: isDarkMode
-                          ? Color(0xFF45046A)
-                          : Color(0xFFE8DAFF),
+                      backgroundColor: isDarkMode ? Color(0xFF350D4C) : Color(0xFFAE86C1),
+                      foregroundColor: isDarkMode ? Color(0xFFAE86C1) : Color(0xFF350D4C) ,
                     ),
                     child: _saving
                         ? const SizedBox(
@@ -343,9 +338,7 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                             'Atualizar',
                             style: GoogleFonts.pressStart2p(
                               fontSize: 10,
-                              color: isDarkMode
-                                  ? Color(0xFF45046A)
-                                  : Color(0xFFE8DAFF),
+                              color: isDarkMode ? Color(0xFFAE86C1) : Color(0xFF350D4C) ,
                             ),
                           ),
                   ),

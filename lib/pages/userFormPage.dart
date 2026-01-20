@@ -69,7 +69,7 @@ class _UserformpageState extends State<Userformpage> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.isDarkMode;
     return Scaffold(
-      backgroundColor: isDarkMode ? Color(0xFF45046A) : Color(0xFF671993),
+      backgroundColor: isDarkMode ? Color(0xFF350D4C) : Color(0xFFAE86C1),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -172,7 +172,10 @@ class _UserformpageState extends State<Userformpage> {
                                 )
                               : Text(
                                   'Criar Usuário',
-                                  style: GoogleFonts.pressStart2p(fontSize: 10),
+                                  style: GoogleFonts.pressStart2p(fontSize: 10,
+                                   color: isDarkMode
+                                      ? Color(0xFFB5076B)
+                                      : Color(0xFFD66AC2)),
                                 ),
                         ),
                       ],

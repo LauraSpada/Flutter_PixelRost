@@ -13,14 +13,13 @@ class Appmenudrawer extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Drawer(
       child: Container(
-        color: isDarkMode ? Color(0xFF45046A) : Color(0xFF671993),
+        color: isDarkMode ? Color(0xFF350D4C) : Color(0xFFAE86C1),
         child: Column(
           children: [
             const SizedBox(height: 2),
             Image.asset(
               isDark ? 'assets/logo-dark.png' : 'assets/logo-light.png',
             ),
-            const SizedBox(height: 4),
             Divider(),
             ListTile(
               leading: const Icon(Icons.home),
