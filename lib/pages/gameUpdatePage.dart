@@ -23,6 +23,7 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
   late TextEditingController _tpController;
   late TextEditingController _imgController;
   late TextEditingController _cmpController;
+  late bool _favorite;
   bool _saving = false;
 
   @override
@@ -36,6 +37,7 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
     _tpController = TextEditingController(text: widget.game.type);
     _imgController = TextEditingController(text: widget.game.image ?? "");
     _cmpController = TextEditingController(text: widget.game.company);
+    _favorite = widget.game.favorite;
   }
 
   @override
@@ -61,6 +63,7 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
       type: _tpController.text.trim(),
       image: _imgController.text.trim(),
       company: _cmpController.text.trim(),
+      favorite: _favorite,
     );
 
     try {
@@ -69,14 +72,14 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
       if (mounted) {
         Navigator.of(context).pop(savedGame);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Game atualizado com sucesso!')),
+          const SnackBar(content: Text('Game successfully updated!')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Erro: $e')));
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -89,95 +92,91 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
     bool isDarkMode = themeProvider.isDarkMode;
 
     return Scaffold(
-     appBar: AppBar(
+      appBar: AppBar(
         leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-         color: isDarkMode ? Colors.white : Colors.black,
-       ),
-      onPressed: () => Navigator.pop(context),
-    ),
-    title: Text(
-      "Atualizar",
-      style: GoogleFonts.pressStart2p(fontSize: 15),
-   ),
-  actions: [
-    Padding(
-      padding: const EdgeInsets.only(right: 12),
-      child: InkResponse(
-        radius: 22,
-        onTap: _saving
-            ? null
-            : () async {
-                final confirm = await showDialog<bool>(
-                  context: context,
-                  builder: (_) => AlertDialog(
-                    title: const Text('Confirmação'),
-                    content: const Text(
-                      'Deseja realmente excluir este jogo?',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () =>
-                            Navigator.pop(context, false),
-                        child: const Text('Cancelar'),
-                      ),
-                      TextButton(
-                        onPressed: () =>
-                            Navigator.pop(context, true),
-                        child: const Text('Excluir'),
-                      ),
-                    ],
-                  ),
-                );
-
-                if (confirm == true) {
-                  setState(() => _saving = true);
-
-                  try {
-                    await widget.service.deleteGame(
-                      widget.game.id!,
-                    );
-
-                    if (!mounted) return;
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content:
-                            Text('Jogo excluído com sucesso!'),
-                      ),
-                    );
-
-                    Navigator.pop(context, true);
-                  } catch (e) {
-                    if (!mounted) return;
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Erro ao excluir: $e'),
-                      ),
-                    );
-                  } finally {
-                    if (mounted) {
-                      setState(() => _saving = false);
-                    }
-                  }
-                }
-              },
-        child: CircleAvatar(
-          radius: 22,
-          backgroundColor:
-              isDarkMode ? Colors.black : Color(0xFFE8DAFF),
-          child: Icon(
-            Icons.delete_forever,
-            size: 22,
-            color: isDarkMode ? Color(0xFFB5076B) : Color(0xFFFF7EC8),
+          icon: Icon(
+            Icons.arrow_back,
+            color: isDarkMode ? Colors.white : Colors.black,
           ),
+          onPressed: () => Navigator.pop(context),
         ),
+        title: Text("Update", style: GoogleFonts.pressStart2p(fontSize: 15)),
+        actions: [ 
+          IconButton(
+            icon: Icon(
+              _favorite ? Icons.star : Icons.star_border,
+              color: _favorite ? Colors.amber : Colors.amber,
+            ),
+            onPressed: () {
+              setState(() {
+                _favorite = !_favorite;
+              });
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: InkResponse(
+               child: Icon(
+                  Icons.delete_forever_outlined,
+                  size: 22,
+                  color: isDarkMode ? Color(0xFFB5076B) : Color(0xFFFF7EC8),
+                ),
+              radius: 22,
+              onTap: _saving
+                  ? null
+                  : () async {
+                      final confirm = await showDialog<bool>(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          title: const Text('Confirmation'),
+                          content: const Text(
+                            'Do you really want to delete this game?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      if (confirm == true) {
+                        setState(() => _saving = true);
+
+                        try {
+                          await widget.service.deleteGame(widget.game.id!);
+
+                          if (!mounted) return;
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Game successfully deleted!'),
+                            ),
+                          );
+
+                          Navigator.pop(context, true);
+                        } catch (e) {
+                          if (!mounted) return;
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error deleting: $e')),
+                          );
+                        } finally {
+                          if (mounted) {
+                            setState(() => _saving = false);
+                          }
+                        }
+                      }
+                    },
+              ),
+            ),
+        ],
       ),
-    ),
-  ],
-),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -228,24 +227,22 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _gmController,
                           decoration: const InputDecoration(
-                            labelText: 'Nome',
+                            labelText: 'Name',
                             prefixIcon: Icon(Icons.gamepad),
                             border: OutlineInputBorder(),
                             filled: true,
                           ),
                           validator: (v) => (v == null || v.trim().isEmpty)
-                              ? 'Informe o nome'
+                              ? 'Name'
                               : null,
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _desController,
                           decoration: const InputDecoration(
-                            labelText: 'Descrição',
+                            labelText: 'Description',
                             prefixIcon: Icon(Icons.wysiwyg_outlined),
                             border: OutlineInputBorder(),
                             filled: true,
@@ -253,45 +250,42 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _resController,
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
-                            labelText: 'Ano de Lançamento',
+                            labelText: 'Release Date',
                             prefixIcon: Icon(Icons.date_range_outlined),
                             border: OutlineInputBorder(),
                             filled: true,
                           ),
                           validator: (v) {
                             if (v == null || v.trim().isEmpty) {
-                              return 'Informe o ano de lançamento';
+                              return 'Release Year';
                             }
                             if (int.tryParse(v.trim()) == null) {
-                              return 'Digite apenas números';
+                              return 'Only Numbers';
                             }
                             return null;
                           },
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _tpController,
                           decoration: const InputDecoration(
-                            labelText: 'Tipo',
+                            labelText: 'Type',
                             prefixIcon: Icon(Icons.widgets_outlined),
                             border: OutlineInputBorder(),
                             filled: true,
                           ),
                           validator: (v) => (v == null || v.trim().isEmpty)
-                              ? 'Informe o tipo'
+                              ? 'Type'
                               : null,
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _imgController,
                           decoration: const InputDecoration(
-                            labelText: 'URL da Imagem',
+                            labelText: 'Image URL',
                             prefixIcon: Icon(
                               Icons.add_photo_alternate_outlined,
                             ),
@@ -302,16 +296,15 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _cmpController,
                           decoration: const InputDecoration(
-                            labelText: 'Empresa',
+                            labelText: 'Company',
                             prefixIcon: Icon(Icons.business_outlined),
                             border: OutlineInputBorder(),
                             filled: true,
                           ),
                           validator: (v) => (v == null || v.trim().isEmpty)
-                              ? 'Informe a empresa'
+                              ? 'Company'
                               : null,
                         ),
                       ],
@@ -326,7 +319,7 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                     onPressed: _saving ? null : _update,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isDarkMode ? Color(0xFF350D4C) : Color(0xFFAE86C1),
-                      foregroundColor: isDarkMode ? Color(0xFFAE86C1) : Color(0xFF350D4C) ,
+                      foregroundColor: isDarkMode ? Color(0xFFAE86C1)  : Color(0xFF350D4C),
                     ),
                     child: _saving
                         ? const SizedBox(
@@ -335,10 +328,10 @@ class _GameUpdatePageState extends State<GameUpdatePage> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Text(
-                            'Atualizar',
+                            'Update',
                             style: GoogleFonts.pressStart2p(
                               fontSize: 10,
-                              color: isDarkMode ? Color(0xFFAE86C1) : Color(0xFF350D4C) ,
+                              color: isDarkMode ? Color(0xFFAE86C1) : Color(0xFF350D4C),
                             ),
                           ),
                   ),

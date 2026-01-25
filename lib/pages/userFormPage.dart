@@ -57,7 +57,7 @@ class _UserformpageState extends State<Userformpage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Erro: $e')));
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -105,25 +105,23 @@ class _UserformpageState extends State<Userformpage> {
                         TextFormField(
                           controller: _usrController,
                           decoration: InputDecoration(
-                            labelText: 'Nome',
+                            labelText: 'Name',
                             prefixIcon: const Icon(Icons.person),
                             border: const OutlineInputBorder(),
                             filled: true,
-                            fillColor: const Color(0xFFEBE1FF),
                           ),
                           validator: (v) => (v == null || v.trim().isEmpty)
-                              ? 'Informe o nome'
+                              ? 'Name'
                               : null,
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
                           controller: _pwdController,
                           decoration: InputDecoration(
-                            labelText: 'Senha',
+                            labelText: 'Password',
                             prefixIcon: const Icon(Icons.lock_outline),
                             border: const OutlineInputBorder(),
                             filled: true,
-                            fillColor: const Color(0xFFEBE1FF),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _obscure
@@ -137,10 +135,10 @@ class _UserformpageState extends State<Userformpage> {
                           obscureText: _obscure,
                           validator: (v) {
                             if (v == null || v.isEmpty) {
-                              return 'Informe a senha';
+                              return 'Enter the password!!';
                             }
                             if (v.length < 3) {
-                              return 'A senha deve ter ao menos 3 caracteres';
+                              return 'The password must be at least 3 characters long!';
                             }
                             return null;
                           },
@@ -149,7 +147,7 @@ class _UserformpageState extends State<Userformpage> {
                         TextFormField(
                           controller: _imgController,
                           decoration: InputDecoration(
-                            labelText: 'URL da Imagem',
+                            labelText: 'Image URL',
                             prefixIcon: const Icon(Icons.image_outlined),
                             border: const OutlineInputBorder(),
                             filled: true,
@@ -171,7 +169,7 @@ class _UserformpageState extends State<Userformpage> {
                                   ),
                                 )
                               : Text(
-                                  'Criar Usuário',
+                                  'Create User/Sign In',
                                   style: GoogleFonts.pressStart2p(fontSize: 10,
                                    color: isDarkMode
                                       ? Color(0xFFB5076B)

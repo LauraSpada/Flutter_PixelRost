@@ -13,7 +13,7 @@ class Aboutpage extends StatelessWidget {
     bool isDarkMode = themeProvider.isDarkMode;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sobre", style: GoogleFonts.pressStart2p(fontSize: 15)),
+        title: Text("Developer", style: GoogleFonts.pressStart2p(fontSize: 15)),
       ),
       drawer: const Appmenudrawer(),
       body: Center(
@@ -33,7 +33,7 @@ class Aboutpage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Sobre a Desenvolvedora:",
+                "About the Developer:",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

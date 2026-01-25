@@ -65,7 +65,7 @@ class _GamecreatepageState extends State<Gamecreatepage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Erro: $e')));
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -85,7 +85,7 @@ class _GamecreatepageState extends State<Gamecreatepage> {
           ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text("Criar", style: GoogleFonts.pressStart2p(fontSize: 15)),
+        title: Text("Create", style: GoogleFonts.pressStart2p(fontSize: 15)),
       ),
       body: SafeArea(
         child: Center(
@@ -115,7 +115,9 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                       ? Icon(
                           Icons.videogame_asset,
                           size: 40,
-                          color: isDarkMode ? Color(0xFFB5076B) : Color(0xFFFF7EC8),
+                          color: isDarkMode
+                              ? Color(0xFFB5076B)
+                              : Color(0xFFFF7EC8),
                         )
                       : null,
                 ),
@@ -137,24 +139,21 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _gmController,
                           decoration: InputDecoration(
-                            labelText: 'Nome',
+                            labelText: 'Name',
                             prefixIcon: const Icon(Icons.gamepad),
                             border: const OutlineInputBorder(),
                             filled: true,
                           ),
-                          validator: (v) => (v == null || v.trim().isEmpty)
-                              ? 'Informe o nome'
-                              : null,
+                          validator: (v) =>
+                              (v == null || v.trim().isEmpty) ? 'Name' : null,
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _desController,
                           decoration: InputDecoration(
-                            labelText: 'Descrição',
+                            labelText: 'Description',
                             prefixIcon: const Icon(Icons.wysiwyg_outlined),
                             border: const OutlineInputBorder(),
                             filled: true,
@@ -162,45 +161,41 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _resController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            labelText: 'Ano de Lançamento',
+                            labelText: 'Release Date',
                             prefixIcon: const Icon(Icons.date_range_outlined),
                             border: const OutlineInputBorder(),
                             filled: true,
                           ),
                           validator: (v) {
                             if (v == null || v.trim().isEmpty) {
-                              return 'Informe o ano de lançamento';
+                              return 'Release Year';
                             }
                             if (int.tryParse(v.trim()) == null) {
-                              return 'Digite apenas números';
+                              return 'Only Numbers';
                             }
                             return null;
                           },
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _tpController,
                           decoration: InputDecoration(
-                            labelText: 'Tipo',
+                            labelText: 'Type',
                             prefixIcon: const Icon(Icons.widgets_outlined),
                             border: const OutlineInputBorder(),
                             filled: true,
                           ),
-                          validator: (v) => (v == null || v.trim().isEmpty)
-                              ? 'Informe o tipo'
-                              : null,
+                          validator: (v) =>
+                              (v == null || v.trim().isEmpty) ? 'Type' : null,
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _imgController,
                           decoration: InputDecoration(
-                            labelText: 'URL da Imagem',
+                            labelText: 'Image URL',
                             prefixIcon: const Icon(
                               Icons.add_photo_alternate_outlined,
                             ),
@@ -211,16 +206,15 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           controller: _cmpController,
                           decoration: InputDecoration(
-                            labelText: 'Empresa',
+                            labelText: 'Company',
                             prefixIcon: const Icon(Icons.business_outlined),
                             border: const OutlineInputBorder(),
                             filled: true,
                           ),
                           validator: (v) => (v == null || v.trim().isEmpty)
-                              ? 'Informe o tipo'
+                              ? 'Company'
                               : null,
                         ),
                       ],
@@ -235,9 +229,11 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                     onPressed: _saving ? null : _save,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isDarkMode
-                          ? Color(0xFF350D4C) : Color(0xFFAE86C1),
+                          ? Color(0xFF350D4C)
+                          : Color(0xFFAE86C1),
                       foregroundColor: isDarkMode
-                          ? Color(0xFFAE86C1) : Color(0xFF350D4C),
+                          ? Color(0xFFAE86C1)
+                          : Color(0xFF350D4C),
                     ),
                     child: _saving
                         ? const SizedBox(
@@ -246,10 +242,12 @@ class _GamecreatepageState extends State<Gamecreatepage> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Text(
-                            'Salvar',
+                            'Save',
                             style: GoogleFonts.pressStart2p(
                               fontSize: 10,
-                              color: isDarkMode ? Color(0xFFAE86C1) : Color(0xFF350D4C) ,
+                              color: isDarkMode
+                                  ? Color(0xFFAE86C1)
+                                  : Color(0xFF350D4C),
                             ),
                           ),
                   ),

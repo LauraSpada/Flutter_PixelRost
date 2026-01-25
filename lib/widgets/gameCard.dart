@@ -39,23 +39,47 @@ class Gamecard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: AspectRatio(
-                aspectRatio: 1, // sempre quadrada
-                child: game.image != null && game.image!.isNotEmpty
-                    ? Image.network(game.image!, fit: BoxFit.cover)
-                    : Container(
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: AspectRatio(
+            aspectRatio: 1, // sempre quadrada
+            child: game.image != null && game.image!.isNotEmpty
+                ? Image.network(
+                    game.image!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
                         color: Colors.grey[300],
-                        child: const Icon(Icons.videogame_asset, size: 60),
-                      ),
-              ),
-            ),
+                        child: const Icon(
+                          Icons.videogame_asset,
+                          size: 60,
+                          color: Colors.black54,
+                        ),
+                      );
+                    },
+                  )
+                : Container(
+                    color: Colors.grey[300],
+                    child: const Icon(
+                      Icons.videogame_asset,
+                      size: 60,
+                      color: Colors.black54,
+                    ),
+                  ),
+          ),
+        ),
             const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child:  Icon(
+                        game.favorite ? Icons.star : Icons.star_border,
+                        color: game.favorite ? Colors.amber : Colors.grey,
+                        ),
+            ),
             Text(
               game.name,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -64,7 +88,6 @@ class Gamecard extends StatelessWidget {
               game.company,
               style: TextStyle(fontSize: 12, color: Colors.black),
             ),
-            const SizedBox(height: 8),
             const Spacer(),
             const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.black),
           ],

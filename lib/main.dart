@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pixelroster/pages/aboutPage.dart';
 import 'package:flutter_pixelroster/pages/gameCreatePage.dart';
+import 'package:flutter_pixelroster/pages/gameListFavoritePage.dart';
 import 'package:flutter_pixelroster/pages/gameListPage.dart';
 import 'package:flutter_pixelroster/pages/homePage.dart';
 import 'package:flutter_pixelroster/pages/loginPage.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Flutter Pixel Roster',
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeProvider.themeMode,
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         '/about': (context) => const Aboutpage(),
         '/userform': (context) => Userformpage(service: UserService()),
         '/gamelist': (context) => Gamelistpage(gameService: GameService()),
+        '/gamelistfavorite': (context) => Gamelistfavoritepage(gameService: GameService()),
         '/gamecreate': (context) => Gamecreatepage(service: GameService()),
         '/settings': (context) => const Settingspage(),
       },

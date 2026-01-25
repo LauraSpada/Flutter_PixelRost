@@ -22,6 +22,11 @@ class GameService {
     throw Exception('Falha ao carregar os Jogos (${res.statusCode})');
   }
 
+  Future<List<Game>> getFavoriteGames() async {
+    final games = await getGames();
+    return games.where((game) => game.favorite).toList();
+  }
+
   Future<Game> getGame(String id) async {
     final res = await http.get(_uri('/games/$id'));
     if (res.statusCode == 200) {

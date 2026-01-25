@@ -6,5 +6,6 @@ class AppRoutes {
   static const String settings = '/settings';
   static const String userform = '/userform';
   static const String gamelist = '/gamelist';
+  static const String gamelistfavorite = '/gamelistfavorite';
   static const String gamecreate = '/gamecreate';
 }

@@ -51,7 +51,6 @@ class UserService {
   }
 }
 
-
   /*
   Future<User> getUser(String id) async {
     final res = await http.get(_uri('/users/$id'));

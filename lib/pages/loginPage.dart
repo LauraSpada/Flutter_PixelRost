@@ -39,7 +39,7 @@ class _LoginpageState extends State<Loginpage> {
       Navigator.pushReplacementNamed(context, '/home');
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Usuário ou senha incorretos')),
+        const SnackBar(content: Text('Incorrect User or Password!')),
       );
     }
 
@@ -48,8 +48,8 @@ class _LoginpageState extends State<Loginpage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Provider.of<ThemeProvider>(context).isDarkMode;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.isDarkMode;
     return Scaffold(
       backgroundColor: isDarkMode ? Color(0xFF350D4C) : Color(0xFFAE86C1),
       body: SafeArea(
@@ -61,33 +61,30 @@ class _LoginpageState extends State<Loginpage> {
               child: Column(
                 children: [
                   Image.asset(
-                    isDark ? 'assets/logo-dark.png' : 'assets/logo-light.png',
+                    isDarkMode ? 'assets/logo-dark.png' : 'assets/logo-light.png',
                   ),
                   const SizedBox(height: 40),
                   Form(
                     key: _formkey,
                     child: Column(
                       children: [
-                        // const SizedBox(height: 12),
                         TextFormField(
                           controller: _usrController,
                           decoration: InputDecoration(
-                            labelText: 'Usuário',
+                            labelText: 'User',
                             prefixIcon: Icon(Icons.person),
                             border: OutlineInputBorder(),
                             filled: true,
-                            fillColor: const Color(0xFFEBE1FF),
                           ),
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
                           controller: _pwdController,
                           decoration: InputDecoration(
-                            labelText: 'Senha',
+                            labelText: 'Password',
                             prefixIcon: const Icon(Icons.lock_outline),
                             border: const OutlineInputBorder(),
                             filled: true,
-                            fillColor: const Color(0xFFEBE1FF),
                             suffixIcon: IconButton(
                               onPressed: () =>
                                   setState(() => _obscure = !_obscure),
@@ -102,10 +99,10 @@ class _LoginpageState extends State<Loginpage> {
                           onFieldSubmitted: (_) => _doLogin(),
                           validator: (v) {
                             if (v == null || v.isEmpty) {
-                              return 'Informe a senha';
+                              return 'Enter the password!';
                             }
                             if (v.length < 3) {
-                              return 'A senha deve ter ao menos 3 caracteres';
+                              return 'The password must be at least 3 characters long!';
                             }
                             return null;
                           },
@@ -117,7 +114,7 @@ class _LoginpageState extends State<Loginpage> {
                             backgroundColor: const Color(0xFFEBE1FF),
                           ),
                           child: Text(
-                            'Entrar',
+                            'Sign In',
                             style: GoogleFonts.pressStart2p(fontSize: 10,
                             color: isDarkMode
                                 ? Color(0xFFB5076B)
@@ -135,7 +132,7 @@ class _LoginpageState extends State<Loginpage> {
                             backgroundColor: const Color(0xFFEBE1FF),
                           ),
                           child: Text(
-                            'Fazer Cadastro',
+                            'Sign Up',
                             style: GoogleFonts.pressStart2p(fontSize: 10,
                             color: isDarkMode
                                 ? Color(0xFFB5076B)

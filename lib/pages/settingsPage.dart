@@ -21,13 +21,13 @@ class _SettingspageState extends State<Settingspage> {
     bool isDarkMode = themeProvider.isDarkMode;
 
     if (user == null) {
-      return const Scaffold(body: Center(child: Text("Nenhum usuário logado")));
+      return const Scaffold(body: Center(child: Text("No User logged in!")));
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Configurações",
+          "Settings",
           style: GoogleFonts.pressStart2p(fontSize: 15),
         ),
         actions: [
@@ -67,7 +67,7 @@ class _SettingspageState extends State<Settingspage> {
               Column(
                 children: [
                   Text(
-                    "Informações da sua conta:",
+                    "your account information:",
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

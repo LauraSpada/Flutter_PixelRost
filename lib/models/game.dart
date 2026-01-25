@@ -6,6 +6,7 @@ class Game {
   String type;
   String? image;
   String company;
+  bool favorite;
 
   Game({
     this.id,
@@ -15,6 +16,7 @@ class Game {
     required this.type,
     this.image,
     required this.company,
+    this.favorite = false,
   });
 
   factory Game.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class Game {
       type: json['type'] ?? '',
       image: json['image'] ?? '',
       company: json['company'] ?? '',
+      favorite: json['favorite'] ?? false,
     );
   }
 
@@ -40,6 +43,7 @@ class Game {
       'type': type,
       'image': image,
       'company': company,
+      'favorite' : favorite,
     };
   }
 
@@ -51,6 +55,7 @@ class Game {
     String? type,
     String? image,
     String? company,
+    bool? favorite,
   }) {
     return Game(
       id: id ?? this.id,
@@ -60,6 +65,7 @@ class Game {
       type: type ?? this.type,
       image: image ?? this.image,
       company: company ?? this.company,
+      favorite: favorite ?? this.favorite,
     );
   }
 }
