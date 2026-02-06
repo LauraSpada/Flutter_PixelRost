@@ -12,7 +12,7 @@ class Homepage extends StatelessWidget {
       drawer: const Appmenudrawer(),
       body: Center(
         child: Text(
-          'Home Page!',
+          'Welcome to PixelRoster!',
           style: GoogleFonts.pressStart2p(
             fontSize: 10,
           ),
